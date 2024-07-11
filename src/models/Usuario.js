@@ -1,4 +1,5 @@
 import { pool } from '../config/db.js'
+import bcrypt from 'bcrypt'
 
 class Usuario {
   async index () {
@@ -23,9 +24,10 @@ class Usuario {
   }
 
   async create (nombres, apellidos, username, password) {
+    const hash = await bcrypt.hash(password, 10)
     const [resultado] = await pool.execute(
       'INSERT INTO usuarios(nombres, apellidos, username, password) VALUES (?, ?, ?, ?)',
-      [nombres, apellidos, username, password]
+      [nombres, apellidos, username, hash]
     )
     return resultado
   }

@@ -7,6 +7,7 @@ export const verifyToken = (req, res, next) => {
     if (!authorization) return res.status(401).json({ message: 'Se debe proveer un token' })
 
     jwt.verify(authorization, SECRET_KEY)
+    next()
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({ message: 'El token ha expirado' })
